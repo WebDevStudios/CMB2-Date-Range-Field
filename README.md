@@ -1,12 +1,12 @@
 # WDS CMB2 Date Range Field #
-**Contributors:**      WebDevStudios
-**Donate link:**       http://webdevstudios.com
-**Tags:**
-**Requires at least:** 3.6.0
-**Tested up to:**      3.6.0
-**Stable tag:**        0.1.0
-**License:**           GPLv2
-**License URI:**       http://www.gnu.org/licenses/gpl-2.0.html
+- **Contributors:**      WebDevStudios
+- **Donate link:**       http://webdevstudios.com
+- **Tags:**
+- **Requires at least:** 3.6.0
+- **Tested up to:**      3.6.0
+- **Stable tag:**        0.1.0
+- **License:**           GPLv2
+- **License URI:**       http://www.gnu.org/licenses/gpl-2.0.html
 
 ## Description ##
 
@@ -23,6 +23,28 @@ Adds a date range field to CMB2
 
 ## Frequently Asked Questions ##
 
+### How do I use the field? ###
+Use the field type of `date_range` when initializing your CMB2 Field.
+
+```
+$prefix = '_yourprefix_';
+$cmb_demo = new_cmb2_box( array(
+ 		'id'           => $prefix . 'metabox',
+ 		'title'        => __( 'Test Metabox', 'cmb2' ),
+ 		'object_types' => array( 'post', ), // Post type
+ 		'context'      => 'normal',
+ 		'priority'     => 'high',
+ 		'show_names'   => true,
+ 
+ 	) );
+ 
+ 	$cmb_demo->add_field( array(
+ 		'name'       => __( 'Test Date Range', 'cmb2' ),
+ 		'desc'       => __( 'field description (optional)', 'cmb2' ),
+ 		'id'         => $prefix . 'text',
+ 		'type'       => 'date_range',
+ 	) );
+ ```
 
 ## Screenshots ##
 
