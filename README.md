@@ -12,6 +12,8 @@
 
 Adds a date range field to CMB2
 
+![CMB 2 Date Range Field Demo](https://cldup.com/bdK41R22yW.gif)
+
 ## Installation ##
 
 ### Manual Installation ###
