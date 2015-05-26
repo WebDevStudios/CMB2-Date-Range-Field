@@ -141,7 +141,14 @@ class WDS_CMB2_Date_Range_Field {
 	 */
 	function sanitize( $override_value, $value ) {
 
-		return json_decode( $value, true );
+		$value = json_decode( $value, true );
+		if ( is_array( $value ) ) {
+			$value = array_map( 'sanitize_text_field', $value );
+		} else {
+			sanitize_text_field( $value );
+		}
+
+		return $value;
 
 	}
 }
