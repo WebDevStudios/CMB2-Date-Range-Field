@@ -41,7 +41,7 @@ $cmb_demo = new_cmb2_box( array(
  	$cmb_demo->add_field( array(
  		'name'       => __( 'Test Date Range', 'cmb2' ),
  		'desc'       => __( 'field description (optional)', 'cmb2' ),
- 		'id'         => $prefix . 'text',
+ 		'id'         => $prefix . 'date_range',
  		'type'       => 'date_range',
  	) );
  ```
