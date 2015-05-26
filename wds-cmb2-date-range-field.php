@@ -121,10 +121,12 @@ class WDS_CMB2_Date_Range_Field {
         			    datepickerOptions: {
 					         minDate: null,
 					         maxDate: null
-					     }
+						},
+						altFormat: "mm/dd/yy"
         			});
 				});
     		</script>';
+
 		echo '<input class="date-range" name="' .esc_attr( $field->args['id'] ) . '" id="' . esc_attr( $field->args['id'] ) . '" value=\'' . $value . '\' />';
 	}
 
