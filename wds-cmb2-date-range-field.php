@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WDS CMB2 Date Range Field
+ * Plugin Name: CMB2 Date Range Field
  * Plugin URI:  http://webdevstudios.com
  * Description: Adds a date range field to CMB2
  * Version:     0.1.0
