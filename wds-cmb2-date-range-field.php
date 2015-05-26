@@ -105,15 +105,16 @@ class WDS_CMB2_Date_Range_Field {
 	/**
 	 * Renders the date range field in CMB2.
 	 *
-	 * @param object $field The CMB2 Field Object.
+	 * @param object $field         The CMB2 Field Object.
+	 * @param mixed  $escaped_value The value after being escaped, by default, with sanitize_text_field.
 	 */
-	function render( $field ) {
+	function render( $field, $escaped_value ) {
 		wp_enqueue_style( 'jquery-ui-date-range-field', $this->url . '/assets/jquery-ui.min.css', array(), '1.11.4' );
 		wp_enqueue_style( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.css', array(), '0.4.0' );
 		wp_enqueue_script( 'moment', $this->url . '/assets/moment.min.js', array(), '2.10.3' );
 		wp_enqueue_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'moment' ), '0.4.0' );
 
-		$value = json_encode( $field->value );
+		$value = json_encode( $escaped_value );
 		echo '<script>
         		jQuery(function() {
         			jQuery("#' . esc_attr( $field->args['id'] ) . '").daterangepicker({
