@@ -112,7 +112,7 @@ class WDS_CMB2_Date_Range_Field {
 		wp_enqueue_style( 'jquery-ui-date-range-field', $this->url . '/assets/jquery-ui.min.css', array(), '1.11.4' );
 		wp_enqueue_style( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.css', array(), '0.4.0' );
 		wp_enqueue_script( 'moment', $this->url . '/assets/moment.min.js', array(), '2.10.3' );
-		wp_enqueue_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'moment' ), '0.4.0' );
+		wp_enqueue_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'jquery-ui-datepicker', 'moment' ), '0.4.0' );
 
 		$value = json_encode( $escaped_value );
 		echo '<script>
