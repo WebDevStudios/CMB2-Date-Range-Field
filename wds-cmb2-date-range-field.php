@@ -115,7 +115,7 @@ class WDS_CMB2_Date_Range_Field {
 		wp_enqueue_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'jquery-ui-datepicker', 'moment' ), '0.4.0' );
 
 		$value = json_encode( $escaped_value );
-		echo '<script>
+		$script_ouput = '<script>
         		jQuery(function() {
         			jQuery("#' . esc_attr( $field->args['id'] ) . '").daterangepicker({
         			    presetRanges: false,
@@ -127,6 +127,7 @@ class WDS_CMB2_Date_Range_Field {
         			});
 				});
     		</script>';
+    	echo apply_filters( 'wds-cmb2-date-range-field-inline-js', $script_ouput );
 
 		echo '<input class="date-range" name="' .esc_attr( $field->args['id'] ) . '" id="' . esc_attr( $field->args['id'] ) . '" value=\'' . $value . '\' />';
 	}
