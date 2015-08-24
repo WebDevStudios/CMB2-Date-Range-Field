@@ -118,7 +118,6 @@ class WDS_CMB2_Date_Range_Field {
 		echo '<script>
         		jQuery(function() {
         			jQuery("#' . esc_attr( $field->args['id'] ) . '").daterangepicker({
-        			    presetRanges: false,
         			    datepickerOptions: {
 					         minDate: null,
 					         maxDate: null
