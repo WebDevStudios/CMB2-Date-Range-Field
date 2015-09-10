@@ -3,8 +3,8 @@ Contributors:      WebDevStudios
 Donate link:       http://webdevstudios.com
 Tags:
 Requires at least: 3.6.0
-Tested up to:      3.6.0
-Stable tag:        0.1.0
+Tested up to:      4.3.0
+Stable tag:        0.1.1
 License:           GPLv2
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,10 +28,22 @@ Adds a date range field to CMB2
 
 == Changelog ==
 
+= 0.1.1 =
+
+* The included jQuery UI css was causing major conflicts. This now leans heavily on CMB2 datepicker UI styling.
+* Updated to use CMB2 APIs so that expected functionality will not break.
+* Moved all JS to separate file and handle initiating datepicker with data attributes on the field inputs.
+
 = 0.1.0 =
 * First release
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+
+* The included jQuery UI css was causing major conflicts. This now leans heavily on CMB2 datepicker UI styling.
+* Updated to use CMB2 APIs so that expected functionality will not break.
+* Moved all JS to separate file and handle initiating datepicker with data attributes on the field inputs.
 
 = 0.1.0 =
 First Release

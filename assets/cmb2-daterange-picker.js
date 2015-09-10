@@ -7,17 +7,17 @@ window.cmb2DateRange = window.cmb2DateRange || {};
 		$( '[data-daterange]' ).each( function() {
 
 			var $this = $( this );
-			var data = $this.data();
+			var data = $this.data( 'daterange' );
 
-			$this.daterangepicker({
-				datepickerOptions: {
+			var options = {
+				initialText       : data.buttontext,
+				altFormat         : data.format,
+				datepickerOptions : {
 					minDate: null,
-					maxDate: null,
-					initialText: data.buttontext
+					maxDate: null
 				},
-				altFormat: data.format
-			});
-
+			};
+			$this.daterangepicker( options );
 		});
 
 		$( '.cmb-type-date-range .comiseo-daterangepicker-triggerbutton' ).addClass( 'button-secondary' ).removeClass( 'comiseo-daterangepicker-top comiseo-daterangepicker-vfit' );
