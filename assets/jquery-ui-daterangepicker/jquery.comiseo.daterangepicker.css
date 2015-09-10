@@ -9,7 +9,7 @@
 
 .comiseo-daterangepicker {
 	position: absolute;
-	padding: 5px;
+	padding: 0 0 5px 5px;
 }
 
 .comiseo-daterangepicker-mask {
@@ -60,12 +60,10 @@
 
 .comiseo-daterangepicker-right .comiseo-daterangepicker-calendar {
 	border-left-width: 1px;
-	padding-left: 5px;
 }
 
 .comiseo-daterangepicker-left .comiseo-daterangepicker-calendar {
 	border-right-width: 1px;
-	padding-right: 5px;
 }
 
 .comiseo-daterangepicker-right .comiseo-daterangepicker-buttonpanel {
@@ -92,4 +90,54 @@
 .comiseo-daterangepicker-calendar .ui-state-highlight a.ui-state-default {
 	background: #b0c4de;
 	color: #fff;
+}
+
+.cmb2-element .comiseo-daterangepicker .ui-datepicker-multi .ui-datepicker-group table {
+	width: 100%;
+}
+
+
+.cmb2-element .comiseo-daterangepicker-presets .ui-state-focus,
+.cmb2-element .comiseo-daterangepicker-presets .ui-state-hover,
+.cmb2-element .comiseo-daterangepicker-presets .ui-widget-content .ui-state-focus,
+.cmb2-element .comiseo-daterangepicker-presets .ui-widget-content .ui-state-hover,
+.cmb2-element .comiseo-daterangepicker-presets .ui-widget-header .ui-state-focus,
+.cmb2-element .comiseo-daterangepicker-presets .ui-widget-header .ui-state-hover {
+	border: none;
+	background: none;
+	font-weight: normal;
+	color: inherit;
+}
+
+
+.cmb2-element .comiseo-daterangepicker .ui-button-text-icon-secondary .ui-button-text,
+.cmb2-element .comiseo-daterangepicker .ui-button-text-icons .ui-button-text {
+	padding: .4em 2.1em .4em 1em;
+}
+
+.cmb2-element .comiseo-daterangepicker .ui-button .ui-button-text {
+	display: block;
+	line-height: normal;
+}
+
+.cmb-type-date-range .ui-button-text-icon-secondary .ui-button-text, .ui-button-text-icons .ui-button-text {
+	padding: 0 1.1em 0 0;
+}
+
+.comiseo-daterangepicker-triggerbutton {
+	position: relative;
+}
+
+.cmb-type-date-range .ui-button-text-icon-secondary .ui-button-icon-secondary {
+	right: .5em;
+}
+
+.cmb-type-date-range .ui-button-text-icon-secondary .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.cmb2-element .ui-datepicker .ui-datepicker-group:not( .ui-datepicker-group-last ) tbody tr {
+	border-right: 1px solid #222;
 }

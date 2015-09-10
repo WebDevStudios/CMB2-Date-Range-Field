@@ -3,7 +3,7 @@
  * Plugin Name: CMB2 Date Range Field
  * Plugin URI:  http://webdevstudios.com
  * Description: Adds a date range field to CMB2
- * Version:     0.1.0
+ * Version:     0.1.1
  * Author:      WebDevStudios
  * Author URI:  http://webdevstudios.com
  * Donate link: http://webdevstudios.com
@@ -36,7 +36,7 @@
  */
 class WDS_CMB2_Date_Range_Field {
 
-	const VERSION = '0.1.0';
+	const VERSION = '0.1.1';
 
 	protected $url      = '';
 	protected $path     = '';
@@ -99,7 +99,7 @@ class WDS_CMB2_Date_Range_Field {
 	 * @return null
 	 */
 	public function init() {
-			load_plugin_textdomain( 'wds-cmb2-date-range-field', false, dirname( $this->basename ) . '/languages/' );
+		load_plugin_textdomain( 'wds-cmb2-date-range-field', false, dirname( $this->basename ) . '/languages/' );
 	}
 
 	/**
@@ -108,27 +108,28 @@ class WDS_CMB2_Date_Range_Field {
 	 * @param object $field         The CMB2 Field Object.
 	 * @param mixed  $escaped_value The value after being escaped, by default, with sanitize_text_field.
 	 */
-	function render( $field, $escaped_value ) {
-		wp_enqueue_style( 'jquery-ui-date-range-field', $this->url . '/assets/jquery-ui.min.css', array(), '1.11.4' );
+	function render( $field, $escaped_value, $field_object_id, $field_object_type, $field_type ) {
+
 		wp_enqueue_style( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.css', array(), '0.4.0' );
-		wp_enqueue_script( 'moment', $this->url . '/assets/moment.min.js', array(), '2.10.3' );
-		wp_enqueue_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'jquery-ui-datepicker', 'moment' ), '0.4.0' );
+		wp_register_script( 'moment', $this->url . '/assets/moment.min.js', array(), '2.10.3' );
+		wp_register_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'jquery-ui-datepicker', 'moment' ), '0.4.0' );
+		wp_enqueue_script( 'cmb2-daterange-picker', $this->url . '/assets/cmb2-daterange-picker.js', array( 'jquery-ui-daterangepicker' ), self::VERSION, true );
 
-		$value = json_encode( $escaped_value );
-		echo '<script>
-        		jQuery(function() {
-        			jQuery("#' . esc_attr( $field->args['id'] ) . '").daterangepicker({
-        			    presetRanges: false,
-        			    datepickerOptions: {
-					         minDate: null,
-					         maxDate: null
-						},
-						altFormat: "mm/dd/yy"
-        			});
-				});
-    		</script>';
+		// CMB2_Types::parse_args allows arbitrary attributes to be added
+		$a = $field_type->parse_args( array(), 'input', array(
+			'type'  => 'text',
+			'class' => 'date-range button-secondary',
+			'name'  => $field_type->_name(),
+			'id'    => $field_type->_id(),
+			'desc'  => $field_type->_desc( true ),
+			'data-daterange' => json_encode( array(
+				'id' => '#' . $field_type->_id(),
+				'buttontext' => esc_attr( $field_type->_text( 'button_text', __( 'Select date range...' ) ) ),
+				'format' => $field->args( 'date_format' ) ? $field->args( 'date_format' ) : 'mm/dd/yy',
+			) ),
+		) );
 
-		echo '<input class="date-range" name="' .esc_attr( $field->args['id'] ) . '" id="' . esc_attr( $field->args['id'] ) . '" value=\'' . $value . '\' />';
+		printf( '<div class="cmb2-element"><input%s value=\'%s\'/></div>%s', $field_type->concat_attrs( $a, array( 'desc' ) ), json_encode( $escaped_value ), $a['desc'] );
 	}
 
 	/**
