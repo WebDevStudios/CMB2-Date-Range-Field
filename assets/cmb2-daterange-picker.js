@@ -4,6 +4,9 @@ window.cmb2DateRange = window.cmb2DateRange || {};
 	'use strict';
 
 	app.init = function() {
+
+		var $body = $( 'body' );
+
 		$( '[data-daterange]' ).each( function() {
 
 			var $this = $( this );
@@ -17,6 +20,9 @@ window.cmb2DateRange = window.cmb2DateRange || {};
 					maxDate: null
 				},
 			};
+
+			$body.trigger( 'cmb2_daterange_init', { '$el' : $this, 'options' : options } );
+
 			$this.daterangepicker( options );
 		});
 
