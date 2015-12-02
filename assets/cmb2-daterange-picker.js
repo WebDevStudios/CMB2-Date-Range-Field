@@ -27,7 +27,7 @@ window.cmb2DateRange = window.cmb2DateRange || {};
 		});
 
 		$( '.cmb-type-date-range .comiseo-daterangepicker-triggerbutton' ).addClass( 'button-secondary' ).removeClass( 'comiseo-daterangepicker-top comiseo-daterangepicker-vfit' );
-		$( '.comiseo-daterangepicker' ).wrap('<div class="cmb2-element" />');
+		$( '.comiseo-daterangepicker' ).addClass( 'cmb2-element' );
 
 	};
 

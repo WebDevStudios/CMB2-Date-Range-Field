@@ -92,7 +92,7 @@
 	color: #fff;
 }
 
-.cmb2-element .comiseo-daterangepicker .ui-datepicker-multi .ui-datepicker-group table {
+.cmb2-element.comiseo-daterangepicker .ui-datepicker-multi .ui-datepicker-group table {
 	width: 100%;
 }
 
@@ -110,12 +110,12 @@
 }
 
 
-.cmb2-element .comiseo-daterangepicker .ui-button-text-icon-secondary .ui-button-text,
-.cmb2-element .comiseo-daterangepicker .ui-button-text-icons .ui-button-text {
+.cmb2-element.comiseo-daterangepicker .ui-button-text-icon-secondary .ui-button-text,
+.cmb2-element.comiseo-daterangepicker .ui-button-text-icons .ui-button-text {
 	padding: .4em 2.1em .4em 1em;
 }
 
-.cmb2-element .comiseo-daterangepicker .ui-button .ui-button-text {
+.cmb2-element.comiseo-daterangepicker .ui-button .ui-button-text {
 	display: block;
 	line-height: normal;
 }
