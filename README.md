@@ -43,6 +43,7 @@ Use the field type of `date_range` when initializing your CMB2 Field.
  		'desc'       => __( 'field description (optional)', 'cmb2' ),
  		'id'         => $prefix . 'date_range',
  		'type'       => 'date_range',
+ 		// 'split_values' => true, // Save start date and end date as two separate fields
  	) );
  ```
 
