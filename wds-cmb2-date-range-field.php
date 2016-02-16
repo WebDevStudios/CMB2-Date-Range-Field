@@ -78,6 +78,7 @@ class WDS_CMB2_Date_Range_Field {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'cmb2_render_date_range', array( $this, 'render' ), 10, 5 );
 		add_filter( 'cmb2_sanitize_date_range', array( $this, 'sanitize' ), 10, 4 );
+		add_action( 'cmb2_save_field', array( $this, 'save_field' ), 10, 4 );
 	}
 
 	/**
@@ -149,17 +150,35 @@ class WDS_CMB2_Date_Range_Field {
 			sanitize_text_field( $value );
 		}
 
-		if ( isset( $field_args['split_values'] ) && $field_args['split_values'] ) {
-			if ( ! empty( $value['start'] ) ) {
-				update_post_meta( $object_id, $field_args['id'] . '_start', $value['start'] );
-			}
-			if ( ! empty( $value['end'] ) ) {
-				update_post_meta( $object_id, $field_args['id'] . '_end', $value['end'] );
-			}
-		}
-
 		return $value;
 
+	}
+
+	function save_field( $field_id, $updated, $action, $cmb2_field ) {
+
+		if ( ! $updated || $action == 'repeatable' ) {
+			return;
+		}
+
+		$object_type  = $cmb2_field->object_type;
+		$object_id    = $cmb2_field->object_id;
+		$value        = $cmb2_field->value;
+		$split_values = $cmb2_field->args( 'split_values' );
+
+		$start_date_key = $field_id . '_start';
+		$end_date_key   = $field_id . '_end';
+
+		if ( $action == 'removed' ) {
+
+			delete_metadata( $object_type, $object_id, $start_date_key );
+			delete_metadata( $object_type, $object_id, $end_date_key );
+
+		} elseif ( $split_values ) {
+
+			update_metadata( $object_type, $object_id, $start_date_key, $value['start'] );
+			update_metadata( $object_type, $object_id, $end_date_key, $value['end'] );
+
+		}
 	}
 }
 
