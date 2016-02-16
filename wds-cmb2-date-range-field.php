@@ -77,8 +77,8 @@ class WDS_CMB2_Date_Range_Field {
 
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'cmb2_render_date_range', array( $this, 'render' ), 10, 5 );
-		add_filter( 'cmb2_sanitize_date_range', array( $this, 'sanitize' ), 10, 4 );
-		add_action( 'cmb2_save_field', array( $this, 'save_field' ), 10, 4 );
+		add_filter( 'cmb2_sanitize_date_range', array( $this, 'sanitize' ), 10, 2 );
+		add_action( 'cmb2_save_field', array( $this, 'save_split_fields' ), 10, 4 );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class WDS_CMB2_Date_Range_Field {
 	 *
 	 * @return array|mixed An array of the dates.
 	 */
-	function sanitize( $override_value, $value, $object_id, $field_args ) {
+	function sanitize( $override_value, $value ) {
 
 		$value = json_decode( $value, true );
 		if ( is_array( $value ) ) {
@@ -154,7 +154,7 @@ class WDS_CMB2_Date_Range_Field {
 
 	}
 
-	function save_field( $field_id, $updated, $action, $cmb2_field ) {
+	function save_split_fields( $field_id, $updated, $action, $cmb2_field ) {
 
 		if ( ! $updated || $action == 'repeatable' ) {
 			return;
