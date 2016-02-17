@@ -154,6 +154,14 @@ class WDS_CMB2_Date_Range_Field {
 
 	}
 
+	/**
+	 * Save the start date and end date into separate fields
+	 *
+	 * @param string            $field_id The current field id paramater.
+	 * @param bool              $updated  Whether the metadata update action occurred.
+	 * @param string            $action   Action performed. Could be "repeatable", "updated", or "removed".
+	 * @param CMB2_Field object $field    This field object
+	 */
 	function save_split_fields( $field_id, $updated, $action, $cmb2_field ) {
 
 		if ( ! $updated || $action == 'repeatable' ) {
