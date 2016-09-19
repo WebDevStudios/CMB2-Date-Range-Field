@@ -112,6 +112,7 @@ class WDS_CMB2_Date_Range_Field {
 	function render( $field, $escaped_value, $field_object_id, $field_object_type, $field_type ) {
 
 		wp_enqueue_style( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.css', array(), '0.4.0' );
+		wp_enqueue_style( 'jquery-ui-min', $this->url . '/assets/jquery-ui.min.css', array(), '0.4.0' );
 		wp_register_script( 'moment', $this->url . '/assets/moment.min.js', array(), '2.10.3' );
 		wp_register_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'jquery-ui-datepicker', 'moment' ), '0.4.0' );
 		wp_enqueue_script( 'cmb2-daterange-picker', $this->url . '/assets/cmb2-daterange-picker.js', array( 'jquery-ui-daterangepicker' ), self::VERSION, true );
