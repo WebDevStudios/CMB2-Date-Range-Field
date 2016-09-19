@@ -116,6 +116,10 @@ class WDS_CMB2_Date_Range_Field {
 		wp_register_script( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-menu', 'jquery-ui-datepicker', 'moment' ), '0.4.0' );
 		wp_enqueue_script( 'cmb2-daterange-picker', $this->url . '/assets/cmb2-daterange-picker.js', array( 'jquery-ui-daterangepicker' ), self::VERSION, true );
 
+		if ( version_compare( CMB2_VERSION, '2.2.2', '>=' ) ) {
+			$field_type->type = new CMB2_Type_Text( $field_type );
+		}
+
 		// CMB2_Types::parse_args allows arbitrary attributes to be added
 		$a = $field_type->parse_args( array(), 'input', array(
 			'type'  => 'text',
