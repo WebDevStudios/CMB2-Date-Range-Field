@@ -78,6 +78,7 @@ class WDS_CMB2_Date_Range_Field {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'cmb2_render_date_range', array( $this, 'render' ), 10, 5 );
 		add_filter( 'cmb2_sanitize_date_range', array( $this, 'sanitize' ), 10, 2 );
+		add_action( 'cmb2_save_field', array( $this, 'save_split_fields' ), 10, 4 );
 	}
 
 	/**
@@ -120,7 +121,7 @@ class WDS_CMB2_Date_Range_Field {
 		}
 
 		// CMB2_Types::parse_args allows arbitrary attributes to be added
-		$a = $field_type->parse_args( array(), 'input', array(
+		$a = $field_type->parse_args( 'input', array(), array(
 			'type'  => 'text',
 			'class' => 'date-range button-secondary',
 			'name'  => $field_type->_name(),
@@ -155,6 +156,41 @@ class WDS_CMB2_Date_Range_Field {
 
 		return $value;
 
+	}
+
+	/**
+	 * Save the start date and end date into separate fields
+	 *
+	 * @param string            $field_id The current field id paramater.
+	 * @param bool              $updated  Whether the metadata update action occurred.
+	 * @param string            $action   Action performed. Could be "repeatable", "updated", or "removed".
+	 * @param CMB2_Field object $field    This field object
+	 */
+	function save_split_fields( $field_id, $updated, $action, $cmb2_field ) {
+
+		if ( ! $updated || $action == 'repeatable' ) {
+			return;
+		}
+
+		$object_type  = $cmb2_field->object_type;
+		$object_id    = $cmb2_field->object_id;
+		$value        = $cmb2_field->value;
+		$split_values = $cmb2_field->args( 'split_values' );
+
+		$start_date_key = $field_id . '_start';
+		$end_date_key   = $field_id . '_end';
+
+		if ( $action == 'removed' ) {
+
+			delete_metadata( $object_type, $object_id, $start_date_key );
+			delete_metadata( $object_type, $object_id, $end_date_key );
+
+		} elseif ( $split_values ) {
+
+			update_metadata( $object_type, $object_id, $start_date_key, $value['start'] );
+			update_metadata( $object_type, $object_id, $end_date_key, $value['end'] );
+
+		}
 	}
 }
 
