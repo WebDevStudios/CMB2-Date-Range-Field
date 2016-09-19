@@ -120,7 +120,7 @@ class WDS_CMB2_Date_Range_Field {
 		}
 
 		// CMB2_Types::parse_args allows arbitrary attributes to be added
-		$a = $field_type->parse_args( array(), 'input', array(
+		$a = $field_type->parse_args( 'input', array(), array(
 			'type'  => 'text',
 			'class' => 'date-range button-secondary',
 			'name'  => $field_type->_name(),
