@@ -119,21 +119,57 @@ class WDS_CMB2_Date_Range_Field {
 			$field_type->type = new CMB2_Type_Text( $field_type );
 		}
 
-		// CMB2_Types::parse_args allows arbitrary attributes to be added
-		$a = $field_type->parse_args( array(), 'input', array(
+		$args = array(
 			'type'  => 'text',
-			'class' => 'date-range button-secondary',
+			'class' => 'regular-text date-range',
 			'name'  => $field_type->_name(),
 			'id'    => $field_type->_id(),
 			'desc'  => $field_type->_desc( true ),
 			'data-daterange' => json_encode( array(
 				'id' => '#' . $field_type->_id(),
 				'buttontext' => esc_attr( $field_type->_text( 'button_text', __( 'Select date range...' ) ) ),
-				'format' => $field->args( 'date_format' ) ? $field->args( 'date_format' ) : 'mm/dd/yy',
 			) ),
-		) );
+		);
 
-		printf( '<div class="cmb2-element"><input%s value=\'%s\'/></div>%s', $field_type->concat_attrs( $a, array( 'desc' ) ), json_encode( $escaped_value ), $a['desc'] );
+		if ( $js_format = CMB2_Utils::php_to_js_dateformat( $field->args( 'date_format' ) ) ) {
+
+			$atts = $field->args( 'attributes' );
+
+			// Don't override user-provided datepicker values
+			$data = isset( $atts['data-daterangepicker'] )
+				? json_decode( $atts['data-daterangepicker'], true )
+				: array();
+
+			$data['altFormat'] = $js_format;
+			$args['data-daterangepicker'] = function_exists( 'wp_json_encode' )
+				? wp_json_encode( $data )
+				: json_encode( $data );
+		}
+
+		// CMB2_Types::parse_args allows arbitrary attributes to be added
+		$a = $field_type->parse_args( 'input', array(), $args );
+
+		if ( $escaped_value ) {
+			$escaped_value = function_exists( 'wp_json_encode' )
+				? wp_json_encode( $escaped_value )
+				: json_encode( $escaped_value );
+		}
+
+		printf(
+			'
+			<div class="cmb2-element"><input%1$s value=\'%2$s\'/><div id="%3$s-spinner" style="float:none;" class="spinner"></div></div>%4$s
+			<script type="text/javascript">
+				document.getElementById( \'%3$s\' ).setAttribute( \'type\', \'hidden\' );
+				document.getElementById( \'%3$s-spinner\' ).setAttribute( \'class\', \'spinner is-active\' );
+			</script>
+			',
+			$field_type->concat_attrs( $a, array( 'desc' ) ),
+			$escaped_value,
+			$field_type->_id(),
+			$a['desc']
+		);
+		?>
+		<?php
 	}
 
 	/**
