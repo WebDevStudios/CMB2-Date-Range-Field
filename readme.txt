@@ -32,6 +32,7 @@ Adds a date range field to CMB2
 
 * Fix year being stored as "Y" instead of the actual year. Fixes [#7](https://github.com/WebDevStudios/CMB2-Date-Range-Field/issues/7)
 * Make it work without JS. Also, add spinner until daterange picker loads.
+* Update styling to work with CMB2's new picker styles.
 
 = 0.1.1 =
 
@@ -48,6 +49,7 @@ Adds a date range field to CMB2
 
 * Fix year being stored as "Y" instead of the actual year. Fixes [#7](https://github.com/WebDevStudios/CMB2-Date-Range-Field/issues/7)
 * Make it work without JS. Also, add spinner until daterange picker loads.
+* Update styling to work with CMB2's new picker styles.
 
 = 0.1.1 =
 
