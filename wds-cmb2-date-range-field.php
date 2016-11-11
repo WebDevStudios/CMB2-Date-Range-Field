@@ -3,7 +3,7 @@
  * Plugin Name: CMB2 Date Range Field
  * Plugin URI:  http://webdevstudios.com
  * Description: Adds a date range field to CMB2
- * Version:     0.1.1
+ * Version:     0.1.2
  * Author:      WebDevStudios
  * Author URI:  http://webdevstudios.com
  * Donate link: http://webdevstudios.com
@@ -36,7 +36,7 @@
  */
 class WDS_CMB2_Date_Range_Field {
 
-	const VERSION = '0.1.1';
+	const VERSION = '0.1.2';
 
 	protected $url      = '';
 	protected $path     = '';
