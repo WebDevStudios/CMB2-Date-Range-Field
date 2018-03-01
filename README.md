@@ -3,8 +3,8 @@
 - **Donate link:**       http://webdevstudios.com
 - **Tags:**
 - **Requires at least:** 3.6.0
-- **Tested up to:**      4.3.0
-- **Stable tag:**        0.1.1
+- **Tested up to:**      4.7.0
+- **Stable tag:**        0.1.2
 - **License:**           GPLv2
 - **License URI:**       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,7 +43,6 @@ Use the field type of `date_range` when initializing your CMB2 Field.
  		'desc'       => __( 'field description (optional)', 'cmb2' ),
  		'id'         => $prefix . 'date_range',
  		'type'       => 'date_range',
- 		// 'split_values' => true, // Save start date and end date as two separate fields
  	) );
  ```
 
@@ -51,6 +50,12 @@ Use the field type of `date_range` when initializing your CMB2 Field.
 
 
 ## Changelog ##
+
+### 0.1.2 ###
+
+* Fix year being stored as "Y" instead of the actual year. Fixes [#7](https://github.com/WebDevStudios/CMB2-Date-Range-Field/issues/7)
+* Make it work without JS. Also, add spinner until daterange picker loads.
+* Update styling to work with CMB2's new picker styles.
 
 ### 0.1.1 ###
 

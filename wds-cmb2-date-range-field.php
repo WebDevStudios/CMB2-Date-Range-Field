@@ -3,7 +3,7 @@
  * Plugin Name: CMB2 Date Range Field
  * Plugin URI:  http://webdevstudios.com
  * Description: Adds a date range field to CMB2
- * Version:     0.1.1
+ * Version:     0.1.2
  * Author:      WebDevStudios
  * Author URI:  http://webdevstudios.com
  * Donate link: http://webdevstudios.com
@@ -36,7 +36,7 @@
  */
 class WDS_CMB2_Date_Range_Field {
 
-	const VERSION = '0.1.1';
+	const VERSION = '0.1.2';
 
 	protected $url      = '';
 	protected $path     = '';
@@ -109,7 +109,7 @@ class WDS_CMB2_Date_Range_Field {
 	 * @param object $field         The CMB2 Field Object.
 	 * @param mixed  $escaped_value The value after being escaped, by default, with sanitize_text_field.
 	 */
-	function render( $field, $escaped_value, $field_object_id, $field_object_type, $field_type ) {
+	public function render( $field, $escaped_value, $field_object_id, $field_object_type, $field_type ) {
 
 		wp_enqueue_style( 'jquery-ui-daterangepicker', $this->url . '/assets/jquery-ui-daterangepicker/jquery.comiseo.daterangepicker.css', array(), '0.4.0' );
 		wp_enqueue_style( 'jquery-ui-min', $this->url . '/assets/jquery-ui.min.css', array(), '0.4.0' );
@@ -121,21 +121,57 @@ class WDS_CMB2_Date_Range_Field {
 			$field_type->type = new CMB2_Type_Text( $field_type );
 		}
 
-		// CMB2_Types::parse_args allows arbitrary attributes to be added
-		$a = $field_type->parse_args( 'input', array(), array(
+		$args = array(
 			'type'  => 'text',
-			'class' => 'date-range button-secondary',
+			'class' => 'regular-text date-range',
 			'name'  => $field_type->_name(),
 			'id'    => $field_type->_id(),
-			'desc'  => $field_type->_desc( true ),
 			'data-daterange' => json_encode( array(
 				'id' => '#' . $field_type->_id(),
 				'buttontext' => esc_attr( $field_type->_text( 'button_text', __( 'Select date range...' ) ) ),
-				'format' => $field->args( 'date_format' ) ? $field->args( 'date_format' ) : 'mm/dd/yy',
 			) ),
-		) );
+		);
 
-		printf( '<div class="cmb2-element"><input%s value=\'%s\'/></div>%s', $field_type->concat_attrs( $a, array( 'desc' ) ), json_encode( $escaped_value ), $a['desc'] );
+		if ( $js_format = CMB2_Utils::php_to_js_dateformat( $field->args( 'date_format' ) ) ) {
+
+			$atts = $field->args( 'attributes' );
+
+			// Don't override user-provided datepicker values
+			$data = isset( $atts['data-daterangepicker'] )
+				? json_decode( $atts['data-daterangepicker'], true )
+				: array();
+
+			$data['altFormat'] = $js_format;
+			$args['data-daterangepicker'] = function_exists( 'wp_json_encode' )
+				? wp_json_encode( $data )
+				: json_encode( $data );
+		}
+
+		// CMB2_Types::parse_args allows arbitrary attributes to be added
+		$a = $field_type->parse_args( 'input', array(), $args );
+
+		if ( $escaped_value ) {
+			$escaped_value = function_exists( 'wp_json_encode' )
+				? wp_json_encode( $escaped_value )
+				: json_encode( $escaped_value );
+		}
+
+		printf(
+			'
+			<div class="cmb2-element"><input%1$s value=%2$s /><div id="%3$s-spinner" style="float:none;" class="spinner"></div></div>%4$s
+			<script type="text/javascript">
+				document.getElementById( \'%3$s\' ).setAttribute( \'type\', \'hidden\' );
+				document.getElementById( \'%3$s-spinner\' ).setAttribute( \'class\', \'spinner is-active\' );
+			</script>
+			',
+			$field_type->concat_attrs( $a, array( 'desc' ) ),
+			$escaped_value,
+			$field_type->_id(),
+			$a['desc']
+		);
+		?>
+		<?php
+
 	}
 
 	/**
@@ -146,17 +182,17 @@ class WDS_CMB2_Date_Range_Field {
 	 *
 	 * @return array|mixed An array of the dates.
 	 */
-	function sanitize( $override_value, $value ) {
+	public function sanitize( $override_value, $value ) {
 
-		$value = json_decode( $value, true );
-		if ( is_array( $value ) ) {
-			$value = array_map( 'sanitize_text_field', $value );
-		} else {
-			sanitize_text_field( $value );
+		if ( ! is_array(  $value  ) ) {
+			return $check;
 		}
 
-		return $value;
+		foreach ( $value as $key => $value ) {
+			$value[ $key ] = array_filter( array_map( 'sanitize_text_field', $value ) );
+		}
 
+		return array_filter( $value );
 	}
 
 	/**
@@ -165,34 +201,36 @@ class WDS_CMB2_Date_Range_Field {
 	 * @param string            $field_id The current field id paramater.
 	 * @param bool              $updated  Whether the metadata update action occurred.
 	 * @param string            $action   Action performed. Could be "repeatable", "updated", or "removed".
-	 * @param CMB2_Field object $field    This field object
 	 */
-	function save_split_fields( $field_id, $updated, $action, $cmb2_field ) {
+	public function save_split_fields( $field_id, $updated, $action, $cmb2_field ) {
 
-		if ( ! $updated || $action == 'repeatable' ) {
-			return;
-		}
-
-		$object_type  = $cmb2_field->object_type;
-		$object_id    = $cmb2_field->object_id;
-		$value        = $cmb2_field->value;
-		$split_values = $cmb2_field->args( 'split_values' );
+		$value = $cmb2_field->value;
+		$object_id  = $cmb2_field->object_id;
 
 		$start_date_key = $field_id . '_start';
 		$end_date_key   = $field_id . '_end';
 
-		if ( $action == 'removed' ) {
+		$split_values = $cmb2_field->args( 'split_values' );
+	
+		$decoded_value = json_decode($value);
 
-			delete_metadata( $object_type, $object_id, $start_date_key );
-			delete_metadata( $object_type, $object_id, $end_date_key );
+		$start = $decoded_value->start;
+		$end = $decoded_value->end;
 
-		} elseif ( $split_values ) {
+		if ($action == 'removed') {
 
-			update_metadata( $object_type, $object_id, $start_date_key, $value['start'] );
-			update_metadata( $object_type, $object_id, $end_date_key, $value['end'] );
+			delete_post_meta( $object_id,  $start_date_key, $start );
+			delete_post_meta( $object_id,  $end_date_key, $end );
+		
+		}
+		elseif($split_values) {
+
+			update_post_meta( $object_id,  $start_date_key, $start );
+			update_post_meta( $object_id,  $end_date_key, $end );
 
 		}
 	}
+
 }
 
 /**
