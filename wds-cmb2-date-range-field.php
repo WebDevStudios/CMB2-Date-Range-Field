@@ -215,19 +215,22 @@ class WDS_CMB2_Date_Range_Field {
 			$start_date_key = $field_id . '_start';
 			$end_date_key   = $field_id . '_end';
 	
+			$cmb2_field_class = new CMB2_Field( (array) $cmb2_field );
+
 			if ( $action === 'removed' ) {
 	
-				$cmb2_field->remove_data( $object_type, $object_id, $start_date_key );
-				$cmb2_field->remove_data( $object_type, $object_id, $end_date_key );
+				$cmb2_field_class->remove_data( $object_type, $object_id, $start_date_key );
+				$cmb2_field_class->remove_data( $object_type, $object_id, $end_date_key );
 	
 			} else {
+
 				$value = json_decode( $value, true );
 	
 				if ( is_array( $value ) ) {
 					$value = array_map( 'sanitize_text_field', $value );
 	
-					$cmb2_field->update_data( $object_type, $object_id, $start_date_key, $value['start'] );
-					$cmb2_field->update_data( $object_type, $object_id, $end_date_key, $value['end'] );
+					$cmb2_field_class->update_data( $object_type, $object_id, $start_date_key, $value['start'] );
+					$cmb2_field_class->update_data( $object_type, $object_id, $end_date_key, $value['end'] );
 
 				}
 			}
