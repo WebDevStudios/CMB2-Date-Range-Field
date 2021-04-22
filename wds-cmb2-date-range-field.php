@@ -204,7 +204,7 @@ class WDS_CMB2_Date_Range_Field {
 	 */
 	function save_split_date_range( $field_id, $updated, $action, $cmb2_field ) {
 
-		if ( ! $updated || $action == 'repeatable' ) {
+		if ( ! $updated || 'repeatable' === $action ) {
 			return;
 		}
 
