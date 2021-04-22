@@ -208,9 +208,7 @@ class WDS_CMB2_Date_Range_Field {
 			return;
 		}
 
-		$split_values = $cmb2_field->args( 'split_date_range' );
-
-		if ( $split_values === true ) {
+		if ( $cmb2_field->args( 'split_date_range' ) ) {
 			
 			$object_type  = $cmb2_field->object_type;
 			$object_id    = $cmb2_field->object_id;
