@@ -201,41 +201,33 @@ class WDS_CMB2_Date_Range_Field {
 	 * @param CMB2_Field object $field    This field object
 	 */
 	function save_split_date_range( $field_id, $updated, $action, $cmb2_field ) {
-
-		if ( ! $updated || 'repeatable' === $action ) {
+		if ( ! $updated || 'repeatable' === $action || ! $cmb2_field->args( 'split_date_range' ) ) {
 			return;
 		}
 
-		if ( $cmb2_field->args( 'split_date_range' ) ) {
-			
-			$object_type  = $cmb2_field->object_type;
-			$object_id    = $cmb2_field->object_id;
-			$value        = $cmb2_field->value;
+		$start_field = $cmb2_field->get_field_clone( array(
+			'id' => $field_id . '_start',
+		) );
 
-			$start_date_key = $field_id . '_start';
-			$end_date_key   = $field_id . '_end';
-	
-			$cmb2_field_class = new CMB2_Field( (array) $cmb2_field );
+		$end_field = $cmb2_field->get_field_clone( array(
+			'id' => $field_id . '_end',
+		) );
 
-			if ( $action === 'removed' ) {
-	
-				$cmb2_field_class->remove_data( $object_type, $object_id, $start_date_key );
-				$cmb2_field_class->remove_data( $object_type, $object_id, $end_date_key );
-	
-			} else {
+		if ( $action === 'removed' ) {
+			$start_field->remove_data();
+			$end_field->remove_data();
 
-				$value = json_decode( $value, true );
-	
-				if ( is_array( $value ) ) {
-					$value = array_map( 'sanitize_text_field', $value );
-	
-					$cmb2_field_class->update_data( $object_type, $object_id, $start_date_key, $value['start'] );
-					$cmb2_field_class->update_data( $object_type, $object_id, $end_date_key, $value['end'] );
-
-				}
-			}
+			return;
 		}
 
+		$value = json_decode( $cmb2_field->value, true );
+
+		if ( is_array( $value ) ) {
+			$value = array_map( 'sanitize_text_field', $value );
+
+			$start_field->update_data( $value['start'] );
+			$end_field->update_data( $value['end'] );
+		}
 	}
 }
 
